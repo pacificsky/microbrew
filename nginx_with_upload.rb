@@ -57,17 +57,20 @@ class NginxWithUpload < Formula
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
     args << "--with-debug" if build.include? 'with-debug'
-    args << "--add-module=/tmp/nginx_upload_module-2.2.0"  # Always include the upload module
+    upload_module_loc = rand(10000000)
+    args << "--add-module=/tmp/nginx_upload_module_#{upload_module_loc}/nginx_upload_module-2.2.0"  # Always include the upload module
 
     # fetch and unpack the upload module
-    system "wget -P /tmp/ http://www.grid.net.ru/nginx/download/nginx_upload_module-2.2.0.tar.gz"
-    system "tar -C /tmp/ -zxf /tmp/nginx_upload_module-2.2.0.tar.gz"
+    system "mkdir /tmp/nginx_upload_module_#{upload_module_loc}"
+    system "wget -P /tmp/nginx_upload_module_#{upload_module_loc}/ http://www.grid.net.ru/nginx/download/nginx_upload_module-2.2.0.tar.gz"
+    system "tar -C /tmp/nginx_upload_module_#{upload_module_loc}/ -zxf /tmp/nginx_upload_module_#{upload_module_loc}/nginx_upload_module-2.2.0.tar.gz"
 
     system "./configure", *args
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
+    system "rm -fR /tmp/nginx_upload_module_#{upload_module_loc}"
   end
 
   def caveats; <<-EOS.undent
