@@ -75,7 +75,7 @@ class NginxWithUpload < Formula
 
   def caveats; <<-EOS.undent
     In the interest of allowing you to run `nginx` without `sudo`, the default
-    port is set to localhost:8080.
+    port is set to localhost:8888.
 
     If you want to host pages on your local machine to the public, you should
     change that to localhost:80, and run `sudo nginx`. You'll need to turn off
@@ -126,7 +126,7 @@ __END__
 
      server {
 -        listen       80;
-+        listen       8080;
++        listen       8888;
          server_name  localhost;
 
          #charset koi8-r;
